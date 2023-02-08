@@ -9,4 +9,5 @@ Shell Scripts
 7-movethatfile:	Move the file 'betty' from '/tmp/' to '/tmp/my_first_directory'.
 8-firstdelete	 Delete a file named 'betty' from '/tmp/my_first_directory'.
 9-firstdirdeletion:	Delete the direcctory 'my_first_directory' from '/tmp' direcctory.
-	
+10-back:	Changes the working directory to the previous one.	
+
