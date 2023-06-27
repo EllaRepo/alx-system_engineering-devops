@@ -12,7 +12,7 @@ do
         echo "Fizz"
     elif [ "$mul5" -eq 0 ]
     then
-        echo "BUZZ"
+        echo "Buzz"
     else
         echo "$i"
     fi
