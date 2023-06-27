@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#Bash script that gives you information about the school file
+for i in {1..100}
+do
+    mul3=$(( i % 3 ))
+    mul5=$(( i % 5 ))
+    if [ "$mul3" -eq 0 ] && [ "$mul5" -eq 0 ]
+    then
+        echo "FizzBuzz"
+    elif [ "$mul3" -eq 0 ]
+    then
+        echo "Fizz"
+    elif [ "$mul5" -eq 0 ]
+    then
+        echo "BUZZ"
+    else
+        echo "$i"
+    fi
+done
