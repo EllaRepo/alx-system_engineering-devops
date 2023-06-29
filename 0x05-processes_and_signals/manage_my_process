@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#Bash script that creates the file /var/run/myscript.pid containing its PID
+pfile="/tmp/my_process"
+msg="I am alive!"
+while true
+do
+    echo "$msg" >> $pfile
+    sleep 2
+done
