@@ -9,7 +9,7 @@ apt-get -y install nginx
 sed -i 's/listen\s*80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
 
 # Create a file with "Hello World!" message
-echo "Hello World!" > /var/www/html/index.html
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 
 # Restart nginx
 service nginx start
