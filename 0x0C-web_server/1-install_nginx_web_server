@@ -2,7 +2,7 @@
 # script that install Nginx web server
 
 # Install Nginx
-apt-get update
+apt-get -y update
 apt-get -y install nginx
 
 # Create a file with "Hello World!" message
