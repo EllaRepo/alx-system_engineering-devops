@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# script that install Nginx web server
+
+# Install Nginx
+apt-get update
+apt-get -y install nginx
+
+# Configure nginx to listen on port 80
+sed -i 's/listen\s*80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
+
+# Restart nginx
+kill "$(cat /var/run/nginx.pid)"
+/usr/sbin/nginx
+
+# Create a file with "Hello World!" message
+echo "Hello World!" > /var/www/html/index.html
