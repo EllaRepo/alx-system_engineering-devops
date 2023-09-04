@@ -2,13 +2,5 @@
 # script that install Nginx web server
 apt-get -y update
 apt-get -y install nginx
-mkdir /etc/nginx/html/
-echo "Hello World!" > /etc/nginx/html/index.html
-printf %s "server {
-     listen      80 default_server;
-     listen      [::]:80 default_server;
-     root        /etc/nginx/html;
-     index       index.html index.htm;
-}
-" > /etc/nginx/sites-available/default
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 service nginx start
