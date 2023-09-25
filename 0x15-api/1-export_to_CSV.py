@@ -14,10 +14,10 @@ if __name__ == "__main__":
     url = 'https://jsonplaceholder.typicode.com/'
     usr_id = sys.argv[1]
 
-    res = requests.get(url + 'users/' + usr_id)
-    usr_name = res.json().get('name')
+    res = requests.get(url + 'users?id=' + str(usr_id)).json()
+    usr_name = res[0].get('username')
 
-    res = requests.get('{}todos?userId={}'.format(url, usr_id))
+    res = requests.get(url + 'todos?userId=' + str(usr_id))
     todos = res.json()
 
     a_tasks = []
