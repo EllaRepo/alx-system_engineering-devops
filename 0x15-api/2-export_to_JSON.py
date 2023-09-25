@@ -20,13 +20,15 @@ if __name__ == "__main__":
     res = requests.get('{}todos?userId={}'.format(url, sys.argv[1]))
     todos = res.json()
 
-    a_tasks = {str(usr_id): []}
+    l_task = []
     for todo in todos:
-        a_tasks[usr_id].append({
+        dict_l = {
             "task": todo.get('title'),
             "completed": todo.get('completed'),
-            "username": usr_name})
+            "username": usr_name}
+        l_task.append(dict_l)
 
+    a_tasks = {str(usr_id): l_task}
     file_name = '{}.json'.format(usr_id)
     with open(file_name, mode="w") as file:
         json.dump(a_tasks, file)
