@@ -20,13 +20,13 @@ if __name__ == "__main__":
     res = requests.get('{}todos?userId={}'.format(url, sys.argv[1]))
     todos = res.json()
 
-    a_tasks = {usr_id: []}
+    a_tasks = {str(usr_id): []}
     for todo in todos:
         a_tasks[usr_id].append({
-            "task": todo["title"],
-            "completed": todo["completed"],
+            "task": todo.get('title'),
+            "completed": todo.get('completed'),
             "username": usr_name})
 
-    json_data = json.dumps(a_tasks)
-    with open(f"{usr_id}.json", mode="w") as file:
-        file.write(json_data)
+    file_name = '{}.json'.format(usr_id)
+    with open(file_name, mode="w") as file:
+        json.dump(a_tasks, file)
