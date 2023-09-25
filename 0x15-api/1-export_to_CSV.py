@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-""" Python script that fetches hhttps://jsonplaceholder.typicode.com/
+""" Python script that fetches data from https://jsonplaceholder.typicode.com/
+    and exports to csv file
 """
 import csv
 import requests
@@ -11,12 +12,12 @@ if __name__ == "__main__":
         print("Usage: python script.py EMPLOYEE_ID")
         sys.exit(1)
     url = 'https://jsonplaceholder.typicode.com/'
-
-    res = requests.get(url + 'users/' + sys.argv[1])
-    usr_name = res.json().get('name')
     usr_id = sys.argv[1]
 
-    res = requests.get('{}todos?userId={}'.format(url, sys.argv[1]))
+    res = requests.get(url + 'users/' + usr_id)
+    usr_name = res.json().get('name')
+
+    res = requests.get('{}todos?userId={}'.format(url, usr_id))
     todos = res.json()
 
     a_tasks = []
