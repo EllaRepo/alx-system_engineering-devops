@@ -27,5 +27,5 @@ if __name__ == "__main__":
     msg = 'Employee {} is done with tasks({}/{}):'
     print(msg.format(usr_name, tasks_done, tot_tasks))
 
-    for todo in todos:
+    for todo in c_tasks:
         print('\t {}'.format(todo.get('title')))
