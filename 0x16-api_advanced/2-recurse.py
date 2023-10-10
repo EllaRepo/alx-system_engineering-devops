@@ -14,13 +14,16 @@ def add_title(hot_list, posts):
     add_title(hot_list, posts)
 
 
-def recurse(subreddit, hot_list=[], after=None):
+def recurse(subreddit, hot_list=[], after="", count=0):
     """Queries the Reddit API and returns a list containing the titles of all
        hot articles for a given subreddit
     """
     url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {'User-Agent': 'Mozilla/5.0'}
-    params = {'after': after}
+    params = {'after': after,
+              'count': count,
+              'limit': 100
+              }
     response = requests.get(url,
                             headers=headers,
                             params=params,
@@ -28,12 +31,14 @@ def recurse(subreddit, hot_list=[], after=None):
 
     if response.status_code == 200:
         data = response.json()
+        count += data.get('data').get('dist')
         add_title(hot_list, data['data']['children'])
         if not data['data']['after']:
             return hot_list
         else:
             return recurse(subreddit,
-                           hot_list=hot_list,
-                           after=data['data']['after'])
+                           hot_list,
+                           data['data']['after'],
+                           count)
     else:
         return None
