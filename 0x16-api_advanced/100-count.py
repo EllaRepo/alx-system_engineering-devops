@@ -16,7 +16,7 @@ def add_title(hot_list, posts):
     add_title(hot_list, posts)
 
 
-def count_words(subreddit, word_list, after=None, counts=None):
+def count_words(subreddit, word_list, instances={}, after=None):
     """Queries the Reddit API, parses the title of all hot articles, and prints
        a sorted count of given keywords (case-insensitive, delimited by spaces
     """
@@ -26,30 +26,31 @@ def count_words(subreddit, word_list, after=None, counts=None):
               'after': after,
               'limit': 100
               }
-    response = requests.get(url,
-                            headers=headers,
-                            params=params,
+    response = requests.get(url, headers=headers, params=params,
                             allow_redirects=False)
-    if counts is None:
-        counts = {}
-    if response.status_code != 200:
-        return
-    data = response.json()
-    posts = data["data"]["children"]
-    for post in posts:
-        title = post["data"]["title"].lower()
-        for word in word_list:
-            pattern = r"\b" + re.escape(word.lower()) + r"\b"
-            matches = re.findall(pattern, title)
-            if matches:
-                if word.lower() in counts:
-                    counts[word.lower()] += len(matches)
-                else:
-                    counts[word.lower()] = len(matches)
-    next_page = data["data"]["after"]
-    if next_page is not None:
-        count_words(subreddit, word_list, after=next_page, counts=counts)
+    if response.status_code == 200:
+        data = response.json()
+        results = data.get("data")
+        after = results.get("after")
+        for i in results.get("children"):
+            title = i.get("data").get("title").lower().split()
+            for word in word_list:
+                if word.lower() in title:
+                    times = len([t for t in title if t == word.lower()])
+                    if instances.get(word) is None:
+                        instances[word] = times
+                    else:
+                        instances[word] += times
+
+        if after is None:
+            if len(instances) == 0:
+                print("")
+                return
+            instances = sorted(instances.items(),
+                               key=lambda kv: (-kv[1],
+                                               kv[0]))
+            [print("{}: {}".format(k, v)) for k, v in instances]
+        else:
+            count_words(subreddit, word_list, instances, after)
     else:
-        sorted_counts = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
-        for word, count in sorted_counts:
-            print(f"{word}: {count}")
+        print("")
