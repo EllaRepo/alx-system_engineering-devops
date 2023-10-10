@@ -9,11 +9,13 @@ def recurse(subreddit, hot_list=[], after=None):
     """Queries the Reddit API and returns a list containing the titles of all
        hot articles for a given subreddit
     """
-    url = "https://www.reddit.com/r/{}/hot.json?limit=100".format(subreddit)
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
     headers = {'User-Agent': 'Mozilla/5.0'}
-    if after:
-        url += "&after={after}"
-    response = requests.get(url, headers=headers)
+    params = {'after': after}
+    response = requests.get(url,
+                            headers=headers,
+                            params=params,
+                            allow_redirects=False)
     if response.status_code == 200:
         data = response.json()
         for post in data['data']['children']:
