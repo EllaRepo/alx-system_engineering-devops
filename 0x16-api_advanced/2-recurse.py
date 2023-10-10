@@ -25,12 +25,15 @@ def recurse(subreddit, hot_list=[], after=None):
                             headers=headers,
                             params=params,
                             allow_redirects=False)
+
     if response.status_code == 200:
         data = response.json()
         add_title(hot_list, data['data']['children'])
         if not data['data']['after']:
             return hot_list
         else:
-            return recurse(subreddit, hot_list, data['data']['after'])
+            return recurse(subreddit,
+                           hot_list=hot_list,
+                           after=data['data']['after'])
     else:
         return None
