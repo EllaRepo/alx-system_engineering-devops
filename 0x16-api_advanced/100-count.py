@@ -16,7 +16,7 @@ def add_title(hot_list, posts):
     add_title(hot_list, posts)
 
 
-def count_words(subreddit, word_list, instances={}, after=None):
+def count_words(subreddit, word_list, instances={}, after="", count=0):
     """Queries the Reddit API, parses the title of all hot articles, and prints
        a sorted count of given keywords (case-insensitive, delimited by spaces
     """
@@ -24,6 +24,7 @@ def count_words(subreddit, word_list, instances={}, after=None):
     headers = {'User-Agent': 'Mozilla/5.0'}
     params = {
               'after': after,
+              'count': count,
               'limit': 100
               }
     response = requests.get(url, headers=headers, params=params,
@@ -32,6 +33,7 @@ def count_words(subreddit, word_list, instances={}, after=None):
         data = response.json()
         results = data.get("data")
         after = results.get("after")
+        count += results.get("dist")
         for i in results.get("children"):
             title = i.get("data").get("title").lower().split()
             for word in word_list:
@@ -51,6 +53,6 @@ def count_words(subreddit, word_list, instances={}, after=None):
                                                kv[0]))
             [print("{}: {}".format(k, v)) for k, v in instances]
         else:
-            count_words(subreddit, word_list, instances, after)
+            count_words(subreddit, word_list, instances, after, count)
     else:
         print("")
